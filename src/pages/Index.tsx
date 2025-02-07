@@ -5,13 +5,22 @@ import Sidebar from '@/components/layout/Sidebar';
 import MetricCard from '@/components/dashboard/MetricCard';
 import QuickActions from '@/components/dashboard/QuickActions';
 import { Users, BookOpen, FileText, TrendingUp } from 'lucide-react';
+import { useToast } from "@/components/ui/use-toast";
 
 const Index = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { toast } = useToast();
+
+  const handleProfileClick = () => {
+    toast({
+      title: "Profile",
+      description: "Your profile settings would open here. Feature coming soon.",
+    });
+  };
 
   return (
     <div className="min-h-screen bg-neutral-light">
-      <Navbar onMenuClick={() => setIsSidebarOpen(true)} />
+      <Navbar onMenuClick={() => setIsSidebarOpen(true)} onProfileClick={handleProfileClick} />
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       
       {/* Main Content */}
