@@ -4,10 +4,7 @@ import Navbar from '@/components/layout/Navbar';
 import Sidebar from '@/components/layout/Sidebar';
 import MetricCard from '@/components/dashboard/MetricCard';
 import QuickActions from '@/components/dashboard/QuickActions';
-import StudentProgressChart from '@/components/dashboard/StudentProgressChart';
-import GradeDistributionChart from '@/components/dashboard/GradeDistributionChart';
-import GradeTrendChart from '@/components/dashboard/GradeTrendChart';
-import { Users, BookOpen, FileText, TrendingUp } from 'lucide-react';
+import { Users, BookOpen, FileText, TrendingUp, GraduationCap } from 'lucide-react';
 import { useToast } from "@/components/ui/use-toast";
 
 const Index = () => {
@@ -28,13 +25,11 @@ const Index = () => {
       
       <main className="pt-16 lg:pl-64">
         <div className="container py-8">
-          {/* Welcome Section */}
           <div className="mb-8 animate-fade-in">
-            <h1 className="text-4xl font-bold text-gradient mb-2">Welcome back, Teacher</h1>
+            <h1 className="text-4xl font-bold text-gradient mb-2">Welcome back, Professor Smith</h1>
             <p className="text-neutral">Here's what's happening with your classes today.</p>
           </div>
           
-          {/* Metrics Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 animate-fade-in" style={{ '--delay': '0.2s' } as React.CSSProperties}>
             <MetricCard
               title="Total Students"
@@ -53,29 +48,15 @@ const Index = () => {
               icon={<FileText className="h-6 w-6" />}
             />
             <MetricCard
-              title="Average Score"
+              title="Class Average"
               value="85%"
-              icon={<TrendingUp className="h-6 w-6" />}
+              icon={<GraduationCap className="h-6 w-6" />}
               trend={{ value: 5, isPositive: true }}
             />
           </div>
           
-          {/* Quick Actions */}
           <div className="mb-8 animate-fade-in" style={{ '--delay': '0.4s' } as React.CSSProperties}>
             <QuickActions />
-          </div>
-
-          {/* Charts Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <div className="col-span-1 lg:col-span-2">
-              <StudentProgressChart />
-            </div>
-            <div>
-              <GradeDistributionChart />
-            </div>
-            <div>
-              <GradeTrendChart />
-            </div>
           </div>
         </div>
       </main>
