@@ -37,7 +37,11 @@ const Navbar = ({ onMenuClick, onProfileClick }: NavbarProps) => {
               Analysis
             </Button>
           </Link>
-          <Button variant="ghost" className="nav-link">Resources</Button>
+          <Link to="/resources">
+            <Button variant="ghost" className={`nav-link ${location.pathname === '/resources' ? 'bg-primary/10' : ''}`}>
+              Resources
+            </Button>
+          </Link>
           <Button variant="ghost" className="nav-link">Reports</Button>
         </div>
         <div className="flex items-center gap-4">
