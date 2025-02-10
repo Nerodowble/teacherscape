@@ -4,6 +4,9 @@ import Navbar from '@/components/layout/Navbar';
 import Sidebar from '@/components/layout/Sidebar';
 import MetricCard from '@/components/dashboard/MetricCard';
 import QuickActions from '@/components/dashboard/QuickActions';
+import StudentProgressChart from '@/components/dashboard/StudentProgressChart';
+import GradeDistributionChart from '@/components/dashboard/GradeDistributionChart';
+import GradeTrendChart from '@/components/dashboard/GradeTrendChart';
 import { Users, BookOpen, FileText, TrendingUp } from 'lucide-react';
 import { useToast } from "@/components/ui/use-toast";
 
@@ -23,7 +26,6 @@ const Index = () => {
       <Navbar onMenuClick={() => setIsSidebarOpen(true)} onProfileClick={handleProfileClick} />
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       
-      {/* Main Content */}
       <main className="pt-16 lg:pl-64">
         <div className="container py-8">
           {/* Welcome Section */}
@@ -59,8 +61,21 @@ const Index = () => {
           </div>
           
           {/* Quick Actions */}
-          <div className="animate-fade-in" style={{ '--delay': '0.4s' } as React.CSSProperties}>
+          <div className="mb-8 animate-fade-in" style={{ '--delay': '0.4s' } as React.CSSProperties}>
             <QuickActions />
+          </div>
+
+          {/* Charts Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div className="col-span-1 lg:col-span-2">
+              <StudentProgressChart />
+            </div>
+            <div>
+              <GradeDistributionChart />
+            </div>
+            <div>
+              <GradeTrendChart />
+            </div>
           </div>
         </div>
       </main>
