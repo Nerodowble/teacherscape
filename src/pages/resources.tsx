@@ -1,9 +1,10 @@
+
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Search, Filter, Folder, Video, FileText, Audio, Presentation, Link as LinkIcon, BookOpen } from 'lucide-react';
+import { Search, Filter, Folder, Video, FileText, Music, Presentation, Link as LinkIcon, BookOpen } from 'lucide-react';
 import { useToast } from "@/components/ui/use-toast";
 
 // Mock data for resources
@@ -65,7 +66,7 @@ const ResourcesPage = () => {
       case "video":
         return <Video className="h-5 w-5 text-red-500" />;
       case "audio":
-        return <Audio className="h-5 w-5 text-green-500" />;
+        return <Music className="h-5 w-5 text-green-500" />;
       case "presentation":
         return <Presentation className="h-5 w-5 text-yellow-500" />;
       default:
