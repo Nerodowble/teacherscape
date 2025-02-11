@@ -1,7 +1,5 @@
-
 import React, { useState } from 'react';
 import Navbar from '@/components/layout/Navbar';
-import Sidebar from '@/components/layout/Sidebar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
@@ -42,14 +40,10 @@ const studentsList = [
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
 
 const Analysis = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
   return (
     <div className="min-h-screen bg-neutral-light">
-      <Navbar onMenuClick={() => setIsSidebarOpen(true)} onProfileClick={() => {}} />
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-      
-      <main className="pt-16 lg:pl-64">
+      <Navbar />
+      <main className="pt-16">
         <div className="container py-8">
           <h1 className="text-4xl font-bold text-gradient mb-6">Performance Analysis</h1>
           

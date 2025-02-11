@@ -1,14 +1,11 @@
-
-import React, { useState } from 'react';
+import React from 'react';
 import Navbar from '@/components/layout/Navbar';
-import Sidebar from '@/components/layout/Sidebar';
 import MetricCard from '@/components/dashboard/MetricCard';
 import QuickActions from '@/components/dashboard/QuickActions';
 import { Users, BookOpen, FileText, TrendingUp, GraduationCap } from 'lucide-react';
 import { useToast } from "@/components/ui/use-toast";
 
 const Index = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { toast } = useToast();
 
   const handleProfileClick = () => {
@@ -20,10 +17,8 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-neutral-light">
-      <Navbar onMenuClick={() => setIsSidebarOpen(true)} onProfileClick={handleProfileClick} />
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-      
-      <main className="pt-16 lg:pl-64">
+      <Navbar />
+      <main className="pt-16">
         <div className="container py-8">
           <div className="mb-8 animate-fade-in">
             <h1 className="text-4xl font-bold text-gradient mb-2">Welcome back, Professor Smith</h1>

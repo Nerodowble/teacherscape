@@ -5,27 +5,17 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/layout/Navbar";
-import Sidebar from "@/components/layout/Sidebar";
 import { useState } from "react";
 
 const Profile = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const onMenuClick = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const onProfileClick = () => {
-    alert("Profile clicked");
-  };
-
   return (
     <div className="flex h-screen bg-neutral-light">
-      <Sidebar isOpen={isOpen} onClose={() => setIsOpen(false)} />
       <div className="flex-1 overflow-x-hidden">
-        <Navbar onMenuClick={onMenuClick} onProfileClick={onProfileClick} />
+        <Navbar />
         <div className="min-h-screen bg-neutral-light pt-16">
-          <main className="container py-8 lg:pl-64">
+          <main className="container py-8">
             <div className="mb-8 animate-fade-in">
               <h1 className="text-4xl font-bold text-gradient mb-2">Profile</h1>
               <p className="text-neutral">Manage your profile information and settings.</p>

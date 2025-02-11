@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import Navbar from "@/components/layout/Navbar";
-import Sidebar from "@/components/layout/Sidebar";
 
 const reportCategories = [
   {
@@ -56,23 +55,12 @@ const ReportCategory = ({ category }: { category: { name: string; reports: strin
 };
 
 const Reports = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const onMenuClick = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const onProfileClick = () => {
-    alert("Profile clicked");
-  };
-
   return (
     <div className="flex h-screen bg-neutral-light">
-      <Sidebar isOpen={isOpen} onClose={() => setIsOpen(false)} />
       <div className="flex-1 overflow-x-hidden">
-        <Navbar onMenuClick={onMenuClick} onProfileClick={onProfileClick} />
+        <Navbar />
         <div className="min-h-screen bg-neutral-light pt-16">
-          <main className="container py-8 lg:pl-64">
+          <main className="container py-8">
             <div className="mb-8 animate-fade-in">
               <h1 className="text-4xl font-bold text-gradient mb-2">Reports</h1>
               <p className="text-neutral">Access and manage all your educational resources in one place.</p>
