@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Navbar from "@/components/layout/Navbar";
-import Sidebar from "@/components/layout/Sidebar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -14,7 +13,6 @@ import {
   Music,
   Presentation,
   Link as LinkIcon,
-  BookOpen,
   Star,
   MessageSquare,
   Download,
@@ -141,11 +139,10 @@ const ResourcesPage = () => {
 
   return (
     <div className="flex h-screen bg-neutral-light">
-      <Sidebar isOpen={true} onClose={() => {}} />
       <div className="flex-1 overflow-x-hidden">
-        <Navbar onMenuClick={() => {}} onProfileClick={() => {}} />
+        <Navbar />
         <div className="min-h-screen bg-neutral-light pt-16">
-          <main className="container py-8 lg:pl-64">
+          <main className="container py-8">
             <div className="mb-8 animate-fade-in">
               <h1 className="text-4xl font-bold text-gradient mb-2">Resources Library</h1>
               <p className="text-neutral">Access and manage all your educational resources in one place.</p>
