@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Navbar from "@/components/layout/Navbar";
+import Sidebar from "@/components/layout/Sidebar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -138,203 +140,209 @@ const ResourcesPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-light pt-16">
-      <main className="container py-8 lg:pl-64">
-        <div className="mb-8 animate-fade-in">
-          <h1 className="text-4xl font-bold text-gradient mb-2">Resources Library</h1>
-          <p className="text-neutral">Access and manage all your educational resources in one place.</p>
-        </div>
+    <div className="flex h-screen bg-neutral-light">
+      <Sidebar isOpen={true} onClose={() => {}} />
+      <div className="flex-1 overflow-x-hidden">
+        <Navbar onMenuClick={() => {}} onProfileClick={() => {}} />
+        <div className="min-h-screen bg-neutral-light pt-16">
+          <main className="container py-8 lg:pl-64">
+            <div className="mb-8 animate-fade-in">
+              <h1 className="text-4xl font-bold text-gradient mb-2">Resources Library</h1>
+              <p className="text-neutral">Access and manage all your educational resources in one place.</p>
+            </div>
 
-        <div className="flex flex-col gap-4 md:flex-row md:items-center mb-6">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            <Input
-              type="text"
-              placeholder="Search by title, author, topic..."
-              className="pl-10"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-          <div className="flex gap-2">
-            <Button variant="outline" className="flex items-center gap-2">
-              <Filter className="h-4 w-4" />
-              Filters
-            </Button>
-            <Button variant="outline" className="flex items-center gap-2">
-              <Tags className="h-4 w-4" />
-              Categories
-            </Button>
-            <Button onClick={handleUpload} className="flex items-center gap-2">
-              <Folder className="h-4 w-4" />
-              Upload
-            </Button>
-          </div>
-        </div>
+            <div className="flex flex-col gap-4 md:flex-row md:items-center mb-6">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <Input
+                  type="text"
+                  placeholder="Search by title, author, topic..."
+                  className="pl-10"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+              <div className="flex gap-2">
+                <Button variant="outline" className="flex items-center gap-2">
+                  <Filter className="h-4 w-4" />
+                  Filters
+                </Button>
+                <Button variant="outline" className="flex items-center gap-2">
+                  <Tags className="h-4 w-4" />
+                  Categories
+                </Button>
+                <Button onClick={handleUpload} className="flex items-center gap-2">
+                  <Folder className="h-4 w-4" />
+                  Upload
+                </Button>
+              </div>
+            </div>
 
-        <Tabs defaultValue="all" className="w-full">
-          <TabsList className="mb-6">
-            <TabsTrigger value="all">All Resources</TabsTrigger>
-            <TabsTrigger value="documents">Documents</TabsTrigger>
-            <TabsTrigger value="videos">Videos</TabsTrigger>
-            <TabsTrigger value="audio">Audio</TabsTrigger>
-            <TabsTrigger value="presentations">Presentations</TabsTrigger>
-          </TabsList>
+            <Tabs defaultValue="all" className="w-full">
+              <TabsList className="mb-6">
+                <TabsTrigger value="all">All Resources</TabsTrigger>
+                <TabsTrigger value="documents">Documents</TabsTrigger>
+                <TabsTrigger value="videos">Videos</TabsTrigger>
+                <TabsTrigger value="audio">Audio</TabsTrigger>
+                <TabsTrigger value="presentations">Presentations</TabsTrigger>
+              </TabsList>
 
-          <TabsContent value="all" className="space-y-4">
-            {mockResources.map((resource) => (
-              <Card key={resource.id} className="hover:shadow-md transition-shadow">
-                <CardContent className="p-6">
-                  <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-                    <div className="flex items-start gap-4">
-                      {getResourceIcon(resource.type)}
-                      <div>
-                        <h3 className="font-semibold text-lg mb-1">{resource.title}</h3>
-                        <p className="text-sm text-gray-600 mb-2">{resource.description}</p>
-                        <div className="flex flex-wrap gap-2 text-sm text-gray-500">
-                          <span>{resource.category} • {resource.subCategory}</span>
-                          <span>By {resource.author}</span>
-                          <span>{resource.date}</span>
-                          <span className="flex items-center gap-1">
-                            <Star className="h-4 w-4 text-yellow-500" />
-                            {resource.rating}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <MessageSquare className="h-4 w-4" />
-                            {resource.comments}
-                          </span>
+              <TabsContent value="all" className="space-y-4">
+                {mockResources.map((resource) => (
+                  <Card key={resource.id} className="hover:shadow-md transition-shadow">
+                    <CardContent className="p-6">
+                      <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                        <div className="flex items-start gap-4">
+                          {getResourceIcon(resource.type)}
+                          <div>
+                            <h3 className="font-semibold text-lg mb-1">{resource.title}</h3>
+                            <p className="text-sm text-gray-600 mb-2">{resource.description}</p>
+                            <div className="flex flex-wrap gap-2 text-sm text-gray-500">
+                              <span>{resource.category} • {resource.subCategory}</span>
+                              <span>By {resource.author}</span>
+                              <span>{resource.date}</span>
+                              <span className="flex items-center gap-1">
+                                <Star className="h-4 w-4 text-yellow-500" />
+                                {resource.rating}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <MessageSquare className="h-4 w-4" />
+                                {resource.comments}
+                              </span>
+                            </div>
+                            <div className="flex flex-wrap gap-2 mt-2">
+                              {resource.tags.map((tag, index) => (
+                                <span
+                                  key={index}
+                                  className="px-2 py-1 bg-primary/10 text-primary text-xs rounded-full"
+                                >
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
                         </div>
-                        <div className="flex flex-wrap gap-2 mt-2">
-                          {resource.tags.map((tag, index) => (
-                            <span
-                              key={index}
-                              className="px-2 py-1 bg-primary/10 text-primary text-xs rounded-full"
-                            >
-                              {tag}
-                            </span>
-                          ))}
+                        <div className="flex gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleBookmark(resource.id)}
+                            className="flex items-center gap-2"
+                          >
+                            <BookmarkPlus className="h-4 w-4" />
+                            Save
+                          </Button>
+                          <Button
+                            variant="default"
+                            size="sm"
+                            onClick={() => handleDownload(resource.id)}
+                            className="flex items-center gap-2"
+                          >
+                            <Download className="h-4 w-4" />
+                            Download
+                          </Button>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleBookmark(resource.id)}
-                        className="flex items-center gap-2"
-                      >
-                        <BookmarkPlus className="h-4 w-4" />
-                        Save
-                      </Button>
-                      <Button
-                        variant="default"
-                        size="sm"
-                        onClick={() => handleDownload(resource.id)}
-                        className="flex items-center gap-2"
-                      >
-                        <Download className="h-4 w-4" />
-                        Download
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </TabsContent>
+                    </CardContent>
+                  </Card>
+                ))}
+              </TabsContent>
 
-          <TabsContent value="documents">
-            {mockResources.filter(r => r.type === "document").map((resource) => (
-              <Card key={resource.id} className="hover:shadow-md transition-shadow">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      {getResourceIcon(resource.type)}
-                      <div>
-                        <h3 className="font-semibold text-lg">{resource.title}</h3>
-                        <p className="text-sm text-gray-500">
-                          {resource.subject} • By {resource.author} • {resource.date}
-                        </p>
+              <TabsContent value="documents">
+                {mockResources.filter(r => r.type === "document").map((resource) => (
+                  <Card key={resource.id} className="hover:shadow-md transition-shadow">
+                    <CardContent className="p-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          {getResourceIcon(resource.type)}
+                          <div>
+                            <h3 className="font-semibold text-lg">{resource.title}</h3>
+                            <p className="text-sm text-gray-500">
+                              By {resource.author} • {resource.date}
+                            </p>
+                          </div>
+                        </div>
+                        <Button variant="outline" size="sm" onClick={() => handleDownload(resource.id)}>
+                          Download
+                        </Button>
                       </div>
-                    </div>
-                    <Button variant="outline" size="sm" onClick={() => handleDownload(resource.id)}>
-                      Download
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </TabsContent>
+                    </CardContent>
+                  </Card>
+                ))}
+              </TabsContent>
 
-          <TabsContent value="videos">
-            {mockResources.filter(r => r.type === "video").map((resource) => (
-              <Card key={resource.id} className="hover:shadow-md transition-shadow">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      {getResourceIcon(resource.type)}
-                      <div>
-                        <h3 className="font-semibold text-lg">{resource.title}</h3>
-                        <p className="text-sm text-gray-500">
-                          {resource.subject} • By {resource.author} • {resource.date}
-                        </p>
+              <TabsContent value="videos">
+                {mockResources.filter(r => r.type === "video").map((resource) => (
+                  <Card key={resource.id} className="hover:shadow-md transition-shadow">
+                    <CardContent className="p-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          {getResourceIcon(resource.type)}
+                          <div>
+                            <h3 className="font-semibold text-lg">{resource.title}</h3>
+                            <p className="text-sm text-gray-500">
+                               By {resource.author} • {resource.date}
+                            </p>
+                          </div>
+                        </div>
+                        <Button variant="outline" size="sm" onClick={() => handleDownload(resource.id)}>
+                          Download
+                        </Button>
                       </div>
-                    </div>
-                    <Button variant="outline" size="sm" onClick={() => handleDownload(resource.id)}>
-                      Download
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </TabsContent>
+                    </CardContent>
+                  </Card>
+                ))}
+              </TabsContent>
 
-          <TabsContent value="audio">
-            {mockResources.filter(r => r.type === "audio").map((resource) => (
-              <Card key={resource.id} className="hover:shadow-md transition-shadow">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      {getResourceIcon(resource.type)}
-                      <div>
-                        <h3 className="font-semibold text-lg">{resource.title}</h3>
-                        <p className="text-sm text-gray-500">
-                          {resource.subject} • By {resource.author} • {resource.date}
-                        </p>
+              <TabsContent value="audio">
+                {mockResources.filter(r => r.type === "audio").map((resource) => (
+                  <Card key={resource.id} className="hover:shadow-md transition-shadow">
+                    <CardContent className="p-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          {getResourceIcon(resource.type)}
+                          <div>
+                            <h3 className="font-semibold text-lg">{resource.title}</h3>
+                            <p className="text-sm text-gray-500">
+                               By {resource.author} • {resource.date}
+                            </p>
+                          </div>
+                        </div>
+                        <Button variant="outline" size="sm" onClick={() => handleDownload(resource.id)}>
+                          Download
+                        </Button>
                       </div>
-                    </div>
-                    <Button variant="outline" size="sm" onClick={() => handleDownload(resource.id)}>
-                      Download
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </TabsContent>
+                    </CardContent>
+                  </Card>
+                ))}
+              </TabsContent>
 
-          <TabsContent value="presentations">
-            {mockResources.filter(r => r.type === "presentation").map((resource) => (
-              <Card key={resource.id} className="hover:shadow-md transition-shadow">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      {getResourceIcon(resource.type)}
-                      <div>
-                        <h3 className="font-semibold text-lg">{resource.title}</h3>
-                        <p className="text-sm text-gray-500">
-                          {resource.subject} • By {resource.author} • {resource.date}
-                        </p>
+              <TabsContent value="presentations">
+                {mockResources.filter(r => r.type === "presentation").map((resource) => (
+                  <Card key={resource.id} className="hover:shadow-md transition-shadow">
+                    <CardContent className="p-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          {getResourceIcon(resource.type)}
+                          <div>
+                            <h3 className="font-semibold text-lg">{resource.title}</h3>
+                            <p className="text-sm text-gray-500">
+                               By {resource.author} • {resource.date}
+                            </p>
+                          </div>
+                        </div>
+                        <Button variant="outline" size="sm" onClick={() => handleDownload(resource.id)}>
+                          Download
+                        </Button>
                       </div>
-                    </div>
-                    <Button variant="outline" size="sm" onClick={() => handleDownload(resource.id)}>
-                      Download
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </TabsContent>
-        </Tabs>
-      </main>
+                    </CardContent>
+                  </Card>
+                ))}
+              </TabsContent>
+            </Tabs>
+          </main>
+        </div>
+      </div>
     </div>
   );
 };

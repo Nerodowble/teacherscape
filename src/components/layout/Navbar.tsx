@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Menu } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -42,10 +41,16 @@ const Navbar = ({ onMenuClick, onProfileClick }: NavbarProps) => {
               Resources
             </Button>
           </Link>
-          <Button variant="ghost" className="nav-link">Reports</Button>
-        </div>
-        <div className="flex items-center gap-4">
-          <Button variant="outline" size="sm" onClick={onProfileClick}>Profile</Button>
+          <Link to="/reports">
+            <Button variant="ghost" className={`nav-link ${location.pathname === '/reports' ? 'bg-primary/10' : ''}`}>
+              Reports
+            </Button>
+          </Link>
+          <Link to="/profile">
+            <Button variant="ghost" className={`nav-link ${location.pathname === '/profile' ? 'bg-primary/10' : ''}`}>
+              Profile
+            </Button>
+          </Link>
         </div>
       </div>
     </nav>
