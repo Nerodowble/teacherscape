@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const RegisterPage = () => {
-  const [username, setUsername] = useState('');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('RegisterPage: Registration process started');
 
-    if (!username || !email || !password || !confirmPassword) {
+    if (!name || !email || !password || !confirmPassword) {
       setError('Todos os campos são obrigatórios.');
       return;
     }
@@ -25,14 +29,23 @@ const RegisterPage = () => {
       return;
     }
 
-    // Simulate registration (replace with your actual registration logic)
     try {
-      // Here you would typically call an API to register the user
-      console.log('Registration successful', { username, email, password });
-      // Redirect to login page after successful registration
-      window.location.href = '/login';
-    } catch (err) {
-      setError('Falha ao registrar. Tente novamente.');
+      console.log('RegisterPage: Sending registration request to backend');
+      const response = await axios.post('http://localhost:3001/register', {
+        name,
+        email,
+        passwordPlain: password,
+      });
+
+      if (response.status === 201) {
+        console.log('RegisterPage: Registration successful', response.data);
+        navigate('/login');
+      } else {
+        setError('Falha ao registrar. Tente novamente.');
+      }
+    } catch (err: any) {
+      console.error('RegisterPage: Registration failed', err);
+      setError(err.response?.data?.error || 'Falha ao registrar. Tente novamente.');
     }
   };
 
@@ -43,16 +56,16 @@ const RegisterPage = () => {
         {error && <div className="text-red-500 text-center mb-4">{error}</div>}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
-              Username:
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
+              Name:
             </label>
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="username"
+              id="name"
               type="text"
-              placeholder="Choose a username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Enter your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               required
             />
           </div>

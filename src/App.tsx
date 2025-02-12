@@ -13,8 +13,15 @@ import Profile from "./pages/Profile";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import DBTeste from "./pages/dbteste";
+import { Navigate } from "react-router-dom";
 
 const queryClient = new QueryClient();
+
+const ProtectedRoute = ({ children }) => {
+  const isAuthenticated = localStorage.getItem('token');
+  return isAuthenticated ? children : <Navigate to="/login" />;
+};
 
 const App = () => {
   return (
@@ -22,14 +29,15 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
           <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/analysis" element={<Analysis />} />
-            <Route path="/resources" element={<Resources />} />
-            <Route path="/reports" element={<Reports />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
+            <Route path="/analysis" element={<ProtectedRoute><Analysis /></ProtectedRoute>} />
+            <Route path="/resources" element={<ProtectedRoute><Resources /></ProtectedRoute>} />
+            <Route path="/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
+            <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/dbteste" element={<DBTeste />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Toaster />

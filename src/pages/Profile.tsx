@@ -1,14 +1,59 @@
-import React from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import React, { useState, useEffect } from 'react';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/layout/Navbar";
-import { useState } from "react";
+import axios from 'axios';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 const Profile = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState({
+    name: '',
+    email: '',
+    bio: '',
+  });
+  const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get('http://localhost:3001/profile', {
+          headers: {
+            Authorization: token,
+          },
+        });
+        setUser(response.data);
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+      }
+    };
+
+    try {
+      fetchProfile();
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  }, []);
 
   return (
     <div className="flex h-screen bg-neutral-light">
@@ -29,23 +74,23 @@ const Profile = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="name">Full Name</Label>
-                    <Input type="text" id="name" defaultValue="John Doe" />
+                    <Input type="text" id="name" defaultValue={user.name} />
                   </div>
                   <div>
                     <Label htmlFor="username">Username</Label>
-                    <Input type="text" id="username" defaultValue="johndoe" />
+                    <Input type="text" id="username" defaultValue={user.name} />
                   </div>
                 </div>
                 <div>
                   <Label htmlFor="email">Email</Label>
-                  <Input type="email" id="email" defaultValue="john.doe@example.com" />
+                  <Input type="email" id="email" defaultValue={user.email} />
                 </div>
                 <div>
                   <Label htmlFor="bio">Biography</Label>
                   <textarea
                     id="bio"
                     className="w-full border rounded-md p-2"
-                    defaultValue="A brief description about yourself."
+                    defaultValue={user.bio}
                   />
                 </div>
               </CardContent>
@@ -104,8 +149,60 @@ const Profile = () => {
               <CardContent className="grid gap-4">
                 <Button>Save Changes</Button>
                 <Button variant="secondary">Cancel</Button>
-                <Button variant="destructive">Delete Account</Button>
-                <Button variant="outline">Logout</Button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="destructive">Delete Account</Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently delete your account
+                        and remove your data from our servers. Please enter your password to confirm.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <Input
+                      type="password"
+                      placeholder="Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => {
+                        try {
+                          axios.delete('http://localhost:3001/profile', {
+                            headers: {
+                              Authorization: localStorage.getItem('token'),
+                            },
+                            data: {
+                              password: password,
+                            },
+                          })
+                            .then(() => {
+                              localStorage.removeItem('token');
+                              window.location.href = '/login';
+                            })
+                            .catch(error => {
+                              console.error('Error deleting account:', error);
+                            });
+                        } catch (error) {
+                          console.error("An error occurred:", error);
+                        }
+                      }}>Continue</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+                <Button variant="outline" onClick={() => {
+                  axios.post('http://localhost:3001/logout')
+                    .then(() => {
+                      localStorage.removeItem('token');
+                      window.location.href = '/login';
+                    })
+                    .catch(error => {
+                      console.error('Error logging out:', error);
+                    });
+                }}>Logout</Button>
               </CardContent>
             </Card>
           </main>

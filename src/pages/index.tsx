@@ -1,12 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import MetricCard from '@/components/dashboard/MetricCard';
 import QuickActions from '@/components/dashboard/QuickActions';
 import { Users, BookOpen, FileText, TrendingUp, GraduationCap } from 'lucide-react';
 import { useToast } from "@/components/ui/use-toast";
+import axios from 'axios';
 
 const Index = () => {
   const { toast } = useToast();
+  const [username, setUsername] = useState('Professor');
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get('http://localhost:3001/profile', {
+          headers: {
+            Authorization: token,
+          },
+        });
+        setUsername(response.data.name);
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   const handleProfileClick = () => {
     toast({
@@ -21,7 +41,7 @@ const Index = () => {
       <main className="pt-16">
         <div className="container py-8">
           <div className="mb-8 animate-fade-in">
-            <h1 className="text-4xl font-bold text-gradient mb-2">Welcome back, Professor Smith</h1>
+            <h1 className="text-4xl font-bold text-gradient mb-2">Welcome back, {username}</h1>
             <p className="text-neutral">Here's what's happening with your classes today.</p>
           </div>
           
