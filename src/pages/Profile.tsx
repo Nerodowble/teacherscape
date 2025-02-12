@@ -37,7 +37,7 @@ const Profile = () => {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:3001/profile', {
+        const response = await axios.get(`http://localhost:${process.env.BACKEND_PORT}/profile`, {
           headers: {
             Authorization: token,
           },
@@ -171,7 +171,7 @@ const Profile = () => {
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
                       <AlertDialogAction onClick={() => {
                         try {
-                          axios.delete('http://localhost:3001/profile', {
+                          axios.delete(`http://localhost:${process.env.BACKEND_PORT}/profile`, {
                             headers: {
                               Authorization: localStorage.getItem('token'),
                             },
@@ -194,7 +194,7 @@ const Profile = () => {
                   </AlertDialogContent>
                 </AlertDialog>
                 <Button variant="outline" onClick={() => {
-                  axios.post('http://localhost:3001/logout')
+                  axios.post(`http://localhost:${process.env.BACKEND_PORT}/logout`)
                     .then(() => {
                       localStorage.removeItem('token');
                       window.location.href = '/login';

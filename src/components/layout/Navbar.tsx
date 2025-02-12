@@ -38,6 +38,12 @@ const Navbar = () => {
               Profile
             </Button>
           </Link>
+          <Button variant="ghost" onClick={() => {
+            localStorage.removeItem('token');
+            window.location.href = '/login';
+          }}>
+            Logout
+          </Button>
         </div>
       </div>
     </nav>

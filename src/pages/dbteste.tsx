@@ -8,7 +8,7 @@ const DBTeste = () => {
     const fetchUsers = async () => {
       console.log('Fetching users from backend');
       try {
-        const response = await axios.get('http://localhost:3001/users');
+        const response = await axios.get(`http://localhost:${process.env.BACKEND_PORT}/users`);
         console.log('Users fetched successfully', response.data);
         setUsers(response.data);
       } catch (error: any) {

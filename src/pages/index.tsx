@@ -14,7 +14,7 @@ const Index = () => {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:3001/profile', {
+        const response = await axios.get(`http://localhost:${process.env.BACKEND_PORT}/profile`, {
           headers: {
             Authorization: token,
           },

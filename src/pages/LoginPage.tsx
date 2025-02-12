@@ -14,7 +14,7 @@ const LoginPage = () => {
 
     try {
       console.log('LoginPage: Sending login request to backend');
-      const response = await axios.post('http://localhost:3001/login', {
+      const response = await axios.post(`http://localhost:${process.env.BACKEND_PORT}/login`, {
         email,
         passwordPlain: password,
       });

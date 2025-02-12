@@ -1,11 +1,10 @@
 {
   "compilerOptions": {
-    "target": "es2020",
+    "target": "es5",
     "module": "commonjs",
-    "lib": ["es2020"],
+    "lib": ["es6", "dom"],
     "declaration": false,
-    "outDir": "dist/backend",
-    "rootDir": "backend",
+    "outDir": "backend/dist",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -13,5 +12,5 @@
     "allowJs": true
   },
   "include": ["backend/**/*"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "backend/dist/**/*"]
 }

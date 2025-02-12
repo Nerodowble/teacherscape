@@ -1,69 +1,83 @@
-# Welcome to your Lovable project
+# Teacherscape
 
-## Project info
+Teacherscape is a full-stack web application built with React and Express. It provides a platform for teachers to manage their classes, students, and grades.
 
-**URL**: https://lovable.dev/projects/e65662e8-b80c-412c-80ea-957c6f1eec67
+## Project Description
 
-## How can I edit this code?
+Teacherscape aims to simplify the process of managing classrooms and student data for teachers. It offers a user-friendly interface for tracking student progress, generating reports, and sharing resources.
 
-There are several ways of editing your application.
+## Features
 
-**Use Lovable**
+- User authentication and authorization
+- Student management
+- Grade management and calculation
+- Report generation and export
+- Resource sharing and organization
+- Interactive dashboard with key metrics
+- Profile management for teachers
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/e65662e8-b80c-412c-80ea-957c6f1eec67) and start prompting.
+## Technologies
 
-Changes made via Lovable will be committed automatically to this repo.
+- Frontend:
+  - React: A JavaScript library for building user interfaces
+  - React Router: A standard library for routing in React
+  - Axios: A promise-based HTTP client for making API requests
+  - Tailwind CSS: A utility-first CSS framework for styling
+  - Shadcn UI: A collection of reusable UI components built with Radix UI and Tailwind CSS
+  - Tanstack React Query: A data-fetching library for React
+  - TypeScript: A superset of JavaScript that adds static typing
 
-**Use your preferred IDE**
+- Backend:
+  - Node.js: A JavaScript runtime built on Chrome's V8 JavaScript engine
+  - Express: A fast, unopinionated, minimalist web framework for Node.js
+  - Cors: A node.js package for providing a Connect/Express middleware that can be used to enable CORS
+  - SQLite: A self-contained, high-reliability, embedded, full-featured, public-domain, SQL database engine
+  - Bcrypt: A library to help you hash passwords
+  - UUID: A library for generating unique IDs
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Getting Started
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+To get started with Teacherscape, follow these steps:
 
-Follow these steps:
+1. Clone the repository:
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+```bash
+git clone https://github.com/your-username/teacherscape.git
+```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+2. Install the dependencies:
 
-# Step 3: Install the necessary dependencies.
-npm i
+```bash
+npm install
+```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+3. Create a `.env` file in the root directory and add the following environment variable:
+
+```
+BACKEND_PORT=3003
+```
+
+4. Run the backend server:
+
+```bash
+ts-node backend/server.cjs
+```
+
+5. Run the frontend server:
+
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Documentation
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- [Frontend Documentation](frontend.md)
+- [Backend Documentation](backend.md)
 
-**Use GitHub Codespaces**
+## Contributing
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Contributions are welcome! Please read the [contributing guidelines](CONTRIBUTING.md) before submitting a pull request.
 
-## What technologies are used for this project?
+## License
 
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/e65662e8-b80c-412c-80ea-957c6f1eec67) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+This project is licensed under the [MIT License](LICENSE).

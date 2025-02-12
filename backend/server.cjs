@@ -1,12 +1,15 @@
 // backend/server.ts
-import { initializeDatabase, createUser, verifyPassword, getUserByEmail, openDb } from './database.mjs';
-import express from 'express';
-import cors from 'cors';
+const { initializeDatabase, createUser, verifyPassword, getUserByEmail, openDb } = require('./database.cjs');
+const express = require('express');
+const cors = require('cors');
 
 const app = express();
-const port = 3001;
+let port = 3003;
 
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:8080', 'http://localhost:8081'],
+  exposedHeaders: ['Authorization'],
+}));
 app.use(express.json());
 
 // Middleware to verify token
@@ -163,6 +166,19 @@ async function main() {
 
     app.listen(port, () => {
       console.log(`Backend server listening on port ${port}`);
+      console.log(`BACKEND_PORT=${port}`);
+    }).on('error', (err) => {
+      if (err.code === 'EADDRINUSE') {
+        console.log(`Port ${port} is already in use. Trying another port...`);
+        port++;
+        app.listen(port, () => {
+          console.log(`Backend server listening on port ${port}`);
+        }).on('error', (err) => {
+          console.error('Failed to run main function', err);
+        });
+      } else {
+        console.error('Failed to run main function', err);
+      }
     });
   } catch (e) {
     console.error('Failed to run main function', e);

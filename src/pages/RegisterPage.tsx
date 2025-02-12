@@ -10,7 +10,7 @@ const RegisterPage = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('RegisterPage: Registration process started');
 
@@ -31,7 +31,7 @@ const RegisterPage = () => {
 
     try {
       console.log('RegisterPage: Sending registration request to backend');
-      const response = await axios.post('http://localhost:3001/register', {
+      const response = await axios.post(`http://localhost:${process.env.BACKEND_PORT}/register`, {
         name,
         email,
         passwordPlain: password,
@@ -43,7 +43,7 @@ const RegisterPage = () => {
       } else {
         setError('Falha ao registrar. Tente novamente.');
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error('RegisterPage: Registration failed', err);
       setError(err.response?.data?.error || 'Falha ao registrar. Tente novamente.');
     }
