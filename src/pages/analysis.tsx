@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useTranslation } from 'react-i18next';
 
 const performanceData = [
   { month: 'Jan', average: 78, attendance: 92 },
@@ -40,24 +41,25 @@ const studentsList = [
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
 
 const Analysis = () => {
+  const { t } = useTranslation();
   return (
     <div className="min-h-screen bg-neutral-light">
       <Navbar />
       <main className="pt-16">
         <div className="container py-8">
-          <h1 className="text-4xl font-bold text-gradient mb-6">Performance Analysis</h1>
+          <h1 className="text-4xl font-bold text-gradient mb-6">{t('Performance Analysis')}</h1>
           
           <Tabs defaultValue="overview" className="w-full">
             <TabsList className="mb-8">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="subjects">Subjects</TabsTrigger>
-              <TabsTrigger value="students">Students</TabsTrigger>
+              <TabsTrigger value="overview">{t('Overview')}</TabsTrigger>
+              <TabsTrigger value="subjects">{t('Subjects')}</TabsTrigger>
+              <TabsTrigger value="students">{t('Students')}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Card className="p-6">
-                  <h3 className="text-lg font-semibold mb-4">Academic Performance Trend</h3>
+                  <h3 className="text-lg font-semibold mb-4">{t('Academic Performance Trend')}</h3>
                   <ResponsiveContainer width="100%" height={300}>
                     <LineChart data={performanceData}>
                       <CartesianGrid strokeDasharray="3 3" />
@@ -65,14 +67,14 @@ const Analysis = () => {
                       <YAxis />
                       <Tooltip />
                       <Legend />
-                      <Line type="monotone" dataKey="average" stroke="#8884d8" name="Grade Average" />
-                      <Line type="monotone" dataKey="attendance" stroke="#82ca9d" name="Attendance Rate" />
+                      <Line type="monotone" dataKey="average" stroke="#8884d8" name={t('Grade Average')} />
+                      <Line type="monotone" dataKey="attendance" stroke="#82ca9d" name={t('Attendance Rate')} />
                     </LineChart>
                   </ResponsiveContainer>
                 </Card>
 
                 <Card className="p-6">
-                  <h3 className="text-lg font-semibold mb-4">Grade Distribution</h3>
+                  <h3 className="text-lg font-semibold mb-4">{t('Grade Distribution')}</h3>
                   <ResponsiveContainer width="100%" height={300}>
                     <PieChart>
                       <Pie
@@ -95,7 +97,7 @@ const Analysis = () => {
                 </Card>
 
                 <Card className="p-6 lg:col-span-2">
-                  <h3 className="text-lg font-semibold mb-4">Performance by Subject</h3>
+                  <h3 className="text-lg font-semibold mb-4">{t('Performance by Subject')}</h3>
                   <ResponsiveContainer width="100%" height={300}>
                     <BarChart data={subjectPerformance}>
                       <CartesianGrid strokeDasharray="3 3" />
@@ -103,7 +105,7 @@ const Analysis = () => {
                       <YAxis />
                       <Tooltip />
                       <Legend />
-                      <Bar dataKey="score" fill="#8884d8" name="Average Score" />
+                      <Bar dataKey="score" fill="#8884d8" name={t('Average Score')} />
                     </BarChart>
                   </ResponsiveContainer>
                 </Card>
@@ -112,14 +114,14 @@ const Analysis = () => {
 
             <TabsContent value="subjects">
               <Card className="p-6">
-                <h3 className="text-xl font-semibold mb-4">Subject Analysis</h3>
+                <h3 className="text-xl font-semibold mb-4">{t('Subject Analysis')}</h3>
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Subject</TableHead>
-                      <TableHead>Average Score</TableHead>
-                      <TableHead>Total Students</TableHead>
-                      <TableHead>Instructor</TableHead>
+                      <TableHead>{t('Subject')}</TableHead>
+                      <TableHead>{t('Average Score')}</TableHead>
+                      <TableHead>{t('Total Students')}</TableHead>
+                      <TableHead>{t('Instructor')}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -138,15 +140,15 @@ const Analysis = () => {
 
             <TabsContent value="students">
               <Card className="p-6">
-                <h3 className="text-xl font-semibold mb-4">Student Analysis</h3>
+                <h3 className="text-xl font-semibold mb-4">{t('Student Analysis')}</h3>
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>ID</TableHead>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Current Grade</TableHead>
-                      <TableHead>Attendance</TableHead>
-                      <TableHead>Enrolled Subjects</TableHead>
+                      <TableHead>{t('ID')}</TableHead>
+                      <TableHead>{t('Name')}</TableHead>
+                      <TableHead>{t('Current Grade')}</TableHead>
+                      <TableHead>{t('Attendance')}</TableHead>
+                      <TableHead>{t('Enrolled Subjects')}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>

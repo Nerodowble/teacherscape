@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Card,
   CardHeader,
@@ -17,195 +18,215 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+} from "@/components/ui/alert-dialog";
+import { LanguageContext } from "@/context/LanguageContext";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useTranslation } from 'react-i18next';
 
 const Profile = () => {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const [user, setUser] = useState({
+ const [user, setUser] = useState({
+    id: '',
     name: '',
     email: '',
     bio: '',
   });
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const { language, setLanguage } = useContext(LanguageContext);
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem('token');
+        if (!token) {
+          console.error('No token found');
+          navigate('/login');
+          return;
+        }
         const response = await axios.get(`http://localhost:${process.env.BACKEND_PORT}/profile`, {
           headers: {
-            Authorization: token,
+            'Authorization': `Bearer ${token}`,
           },
         });
+        console.log('Profile data:', response.data);
         setUser(response.data);
       } catch (error) {
-        console.error('Error fetching profile:', error);
+        if (error.response && error.response.status === 401) {
+          console.error('Unauthorized access - possibly invalid token');
+          navigate('/login');
+        } else {
+          console.error('Error fetching profile:', error);
+        }
       }
     };
 
-    try {
-      fetchProfile();
-    } catch (error) {
-      console.error("An error occurred:", error);
+    fetchProfile();
+
+    // Load language from localStorage
+    const savedLanguage = localStorage.getItem('language');
+    if (savedLanguage) {
+      setLanguage(savedLanguage);
     }
-  }, []);
+  }, [navigate]);
+
+  const handleInputChange = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
+
+  const handleLanguageChange = (newLanguage: string) => {
+    setLanguage(newLanguage);
+    localStorage.setItem('language', newLanguage);
+  };
+
+  const handleSaveLanguage = () => {
+    localStorage.setItem('language', language);
+    alert('Language saved!');
+  };
+
+  const handleSaveProfile = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (password && password === confirmPassword) {
+        // Send the new password to the backend
+        await axios.put(`http://localhost:${process.env.BACKEND_PORT}/profile`, { ...user, password }, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        alert('Profile saved successfully!');
+      } else if (password && password !== confirmPassword) {
+        alert('Passwords do not match!');
+      } else {
+        // Only update profile information
+        await axios.put(`http://localhost:${process.env.BACKEND_PORT}/profile`, user, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        alert('Profile saved successfully!');
+      }
+    } catch (error) {
+      console.error('Error saving profile:', error);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    const password = prompt('Please enter your password to confirm account deletion:');
+    if (password) {
+      try {
+        const token = localStorage.getItem('token');
+        await axios.delete(`http://localhost:${process.env.BACKEND_PORT}/profile`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+          data: { password }, // Send password in the request body
+        });
+        alert('Account deleted!');
+      } catch (error) {
+        console.error('Error deleting account:', error);
+        alert('Failed to delete account. Please check your password and try again.');
+      }
+    } else {
+      alert('Password confirmation is required to delete your account.');
+    }
+  };
 
   return (
-    <div className="flex h-screen bg-neutral-light">
-      <div className="flex-1 overflow-x-hidden">
-        <Navbar />
-        <div className="min-h-screen bg-neutral-light pt-16">
-          <main className="container py-8">
-            <div className="mb-8 animate-fade-in">
-              <h1 className="text-4xl font-bold text-gradient mb-2">Profile</h1>
-              <p className="text-neutral">Manage your profile information and settings.</p>
-            </div>
-            <Card className="w-full">
-              <CardHeader>
-                <CardTitle>Personal Information</CardTitle>
-                <CardDescription>View and edit your personal information.</CardDescription>
-              </CardHeader>
-              <CardContent className="grid gap-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="name">Full Name</Label>
-                    <Input type="text" id="name" defaultValue={user.name} />
-                  </div>
-                  <div>
-                    <Label htmlFor="username">Username</Label>
-                    <Input type="text" id="username" defaultValue={user.name} />
-                  </div>
-                </div>
-                <div>
-                  <Label htmlFor="email">Email</Label>
-                  <Input type="email" id="email" defaultValue={user.email} />
-                </div>
-                <div>
-                  <Label htmlFor="bio">Biography</Label>
-                  <textarea
-                    id="bio"
-                    className="w-full border rounded-md p-2"
-                    defaultValue={user.bio}
-                  />
-                </div>
-              </CardContent>
-            </Card>
+    <div>
+      <Navbar />
+      <div className="container mx-auto p-6 mt-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>{t('Profile Information')}</CardTitle>
+              <CardDescription>{t('Manage your personal information.')}</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label htmlFor="name">{t('Full Name')}</Label>
+                <Input type="text" name="name" value={user.name} onChange={handleInputChange} />
+              </div>
+              <div>
+                <Label htmlFor="email">{t('Email')}</Label>
+                <Input type="email" name="email" value={user.email} onChange={handleInputChange} />
+              </div>
+              <div>
+                <Label htmlFor="bio">{t('Biography')}</Label>
+                <Input type="text" name="bio" value={user.bio} onChange={handleInputChange} />
+              </div>
+              <Button onClick={handleSaveProfile}>{t('Save Changes')}</Button>
+            </CardContent>
+          </Card>
 
-            <Card className="w-full mt-8">
-              <CardHeader>
-                <CardTitle>Account Settings</CardTitle>
-                <CardDescription>Manage your account settings.</CardDescription>
-              </CardHeader>
-              <CardContent className="grid gap-4">
-                <div>
-                  <Label htmlFor="password">Change Password</Label>
-                  <Input type="password" id="password" placeholder="New Password" />
-                </div>
-                <div>
-                  <Label htmlFor="confirmPassword">Confirm Password</Label>
-                  <Input type="password" id="confirmPassword" placeholder="Confirm New Password" />
-                </div>
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="twoFactorAuth">Two-Factor Authentication</Label>
-                  <Switch id="twoFactorAuth" />
-                </div>
-                <div>
-                  <Label>Manage Devices</Label>
-                  {/* List of connected devices */}
-                  <p className="text-sm text-neutral-muted">No devices connected.</p>
-                </div>
-                <div>
-                  <Label>Notification Settings</Label>
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="emailNotifications">Email Notifications</Label>
-                    <Switch id="emailNotifications" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>{t('Password')}</CardTitle>
+              <CardDescription>{t('Change your password.')}</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label htmlFor="password">{t('New Password')}</Label>
+                <Input type="password" id="password" placeholder={t('New Password')} onChange={(e) => setPassword(e.target.value)} />
+              </div>
+              <div>
+                <Label htmlFor="confirmPassword">{t('Confirm New Password')}</Label>
+                <Input type="password" id="confirmPassword" placeholder={t('Confirm New Password')} onChange={(e) => setConfirmPassword(e.target.value)} />
+              </div>
+              <Button onClick={handleSaveProfile}>{t('Change Password')}</Button>
+            </CardContent>
+          </Card>
 
-            <Card className="w-full mt-8">
-              <CardHeader>
-                <CardTitle>Integrations</CardTitle>
-                <CardDescription>Connect to other services.</CardDescription>
-              </CardHeader>
-              <CardContent className="grid gap-4">
-                <Button>Connect to Google</Button>
-                <Button>Connect to Facebook</Button>
-                <Button variant="outline">Generate API Key</Button>
-              </CardContent>
-            </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>{t('Settings')}</CardTitle>
+              <CardDescription>{t('Manage your account settings.')}</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center gap-2">
+                <Label htmlFor="twoFactorAuth">{t('Two-Factor Authentication')}</Label>
+                <Switch id="twoFactorAuth" />
+              </div>
 
-            <Card className="w-full mt-8">
-              <CardHeader>
-                <CardTitle>User Actions</CardTitle>
-                <CardDescription>Perform actions related to your account.</CardDescription>
-              </CardHeader>
-              <CardContent className="grid gap-4">
-                <Button>Save Changes</Button>
-                <Button variant="secondary">Cancel</Button>
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button variant="destructive">Delete Account</Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete your account
-                        and remove your data from our servers. Please enter your password to confirm.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <Input
-                      type="password"
-                      placeholder="Password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={() => {
-                        try {
-                          axios.delete(`http://localhost:${process.env.BACKEND_PORT}/profile`, {
-                            headers: {
-                              Authorization: localStorage.getItem('token'),
-                            },
-                            data: {
-                              password: password,
-                            },
-                          })
-                            .then(() => {
-                              localStorage.removeItem('token');
-                              window.location.href = '/login';
-                            })
-                            .catch(error => {
-                              console.error('Error deleting account:', error);
-                            });
-                        } catch (error) {
-                          console.error("An error occurred:", error);
-                        }
-                      }}>Continue</AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-                <Button variant="outline" onClick={() => {
-                  axios.post(`http://localhost:${process.env.BACKEND_PORT}/logout`)
-                    .then(() => {
-                      localStorage.removeItem('token');
-                      window.location.href = '/login';
-                    })
-                    .catch(error => {
-                      console.error('Error logging out:', error);
-                    });
-                }}>Logout</Button>
-              </CardContent>
-            </Card>
-          </main>
+              <div>
+                <Label htmlFor="language">{t('Language')}</Label>
+                <Select value={language} onValueChange={handleLanguageChange}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder={t('Select a language')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="en">{t('English')}</SelectItem>
+                    <SelectItem value="pt">{t('Português')}</SelectItem>
+                    <SelectItem value="es">{t('Español')}</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <Button onClick={() => handleSaveLanguage()}>{t('Save Language')}</Button>
+
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="destructive">{t('Delete Account')}</Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>{t('Are you absolutely sure?')}</AlertDialogTitle>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>{t('Cancel')}</AlertDialogCancel>
+                    <AlertDialogAction className="destructive" onClick={handleDeleteAccount}>{t('Continue')}</AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+
+              <Button variant="outline">{t('Logout')}</Button>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>

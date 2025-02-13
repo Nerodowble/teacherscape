@@ -9,6 +9,7 @@ The backend is built using Node.js and Express and uses the following technologi
 - SQLite for the database
 - Bcrypt for password hashing
 - UUID for generating unique IDs
+- jsonwebtoken for generating and verifying JWT tokens
 
 ## File Structure
 
@@ -26,6 +27,7 @@ The backend is built using Node.js and Express and uses the following technologi
 The backend uses the following environment variables:
 
 - `BACKEND_PORT`: The port that the backend server is running on
+- `JWT_SECRET`: The secret key used to sign and verify JWT tokens
 
 ## Running the Backend
 

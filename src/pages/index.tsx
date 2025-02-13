@@ -5,8 +5,10 @@ import QuickActions from '@/components/dashboard/QuickActions';
 import { Users, BookOpen, FileText, TrendingUp, GraduationCap } from 'lucide-react';
 import { useToast } from "@/components/ui/use-toast";
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 const Index = () => {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const [username, setUsername] = useState('Professor');
 
@@ -30,8 +32,8 @@ const Index = () => {
 
   const handleProfileClick = () => {
     toast({
-      title: "Profile",
-      description: "Your profile settings would open here. Feature coming soon.",
+      title: t("Profile"),
+      description: t("Your profile settings would open here. Feature coming soon."),
     });
   };
 
@@ -41,29 +43,29 @@ const Index = () => {
       <main className="pt-16">
         <div className="container py-8">
           <div className="mb-8 animate-fade-in">
-            <h1 className="text-4xl font-bold text-gradient mb-2">Welcome back, {username}</h1>
-            <p className="text-neutral">Here's what's happening with your classes today.</p>
+            <h1 className="text-4xl font-bold text-gradient mb-2">{t('Welcome back,', { username: username })}</h1>
+            <p className="text-neutral">{t("Here's what's happening with your classes today.")}</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 animate-fade-in" style={{ '--delay': '0.2s' } as React.CSSProperties}>
             <MetricCard
-              title="Total Students"
+              title={t("Total Students")}
               value="156"
               icon={<Users className="h-6 w-6" />}
               trend={{ value: 12, isPositive: true }}
             />
             <MetricCard
-              title="Active Courses"
+              title={t("Active Courses")}
               value="8"
               icon={<BookOpen className="h-6 w-6" />}
             />
             <MetricCard
-              title="Pending Reviews"
+              title={t("Pending Reviews")}
               value="23"
               icon={<FileText className="h-6 w-6" />}
             />
             <MetricCard
-              title="Class Average"
+              title={t("Class Average")}
               value="85%"
               icon={<GraduationCap className="h-6 w-6" />}
               trend={{ value: 5, isPositive: true }}

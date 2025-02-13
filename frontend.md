@@ -9,6 +9,7 @@ The frontend is built using React and uses the following technologies:
 - Tailwind CSS for styling
 - Shadcn UI for UI components
 - Tanstack React Query for data fetching and caching
+- i18next for internationalization
 
 ## File Structure
 
@@ -21,8 +22,21 @@ The frontend is built using React and uses the following technologies:
     - `LoginPage.tsx`: The login page
     - `RegisterPage.tsx`: The registration page
     - `Profile.tsx`: The profile page
+    - `ForgotPasswordPage.tsx`: The forgot password page
+    - `NotFound.tsx`: The 404 page
+    - `analysis.tsx`: The analysis page
+    - `reports.tsx`: The reports page
+    - `resources.tsx`: The resources page
+    - `dbteste.tsx`: The database test page
+  - `context/`: Contains the React context
+    - `LanguageContext.tsx`: The language context
   - `hooks/`: Contains the React hooks
   - `lib/`: Contains utility functions
+  - `i18n.ts`: The i18next configuration file
+  - `locales/`: Contains the translation files
+    - `en.json`: The English translation file
+    - `pt.json`: The Portuguese translation file
+    - `es.json`: The Spanish translation file
   - `App.tsx`: The main application component
   - `main.tsx`: The entry point for the frontend
 

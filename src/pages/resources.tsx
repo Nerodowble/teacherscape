@@ -20,6 +20,7 @@ import {
   BookmarkPlus
 } from 'lucide-react';
 import { useToast } from "@/components/ui/use-toast";
+import { useTranslation } from 'react-i18next';
 
 const mockResources = [
   {
@@ -97,28 +98,29 @@ const mockResources = [
 ];
 
 const ResourcesPage = () => {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDifficulty, setSelectedDifficulty] = useState("all");
   const { toast } = useToast();
 
   const handleUpload = () => {
     toast({
-      title: "Upload Resource",
-      description: "The upload functionality will be implemented soon.",
+      title: t("Upload Resource"),
+      description: t("The upload functionality will be implemented soon."),
     });
   };
 
   const handleDownload = (resourceId: number) => {
     toast({
-      title: "Download Resource",
-      description: `Downloading resource ${resourceId}...`,
+      title: t("Download Resource"),
+      description: t(`Downloading resource ${resourceId}...`),
     });
   };
 
   const handleBookmark = (resourceId: number) => {
     toast({
-      title: "Bookmark Added",
-      description: "Resource added to your favorites.",
+      title: t("Bookmark Added"),
+      description: t("Resource added to your favorites."),
     });
   };
 
@@ -144,8 +146,8 @@ const ResourcesPage = () => {
         <div className="min-h-screen bg-neutral-light pt-16">
           <main className="container py-8">
             <div className="mb-8 animate-fade-in">
-              <h1 className="text-4xl font-bold text-gradient mb-2">Resources Library</h1>
-              <p className="text-neutral">Access and manage all your educational resources in one place.</p>
+              <h1 className="text-4xl font-bold text-gradient mb-2">{t('Resources Library')}</h1>
+              <p className="text-neutral">{t('Access and manage all your educational resources in one place.')}</p>
             </div>
 
             <div className="flex flex-col gap-4 md:flex-row md:items-center mb-6">
@@ -153,7 +155,7 @@ const ResourcesPage = () => {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <Input
                   type="text"
-                  placeholder="Search by title, author, topic..."
+                  placeholder={t("Search by title, author, topic...")}
                   className="pl-10"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -162,26 +164,26 @@ const ResourcesPage = () => {
               <div className="flex gap-2">
                 <Button variant="outline" className="flex items-center gap-2">
                   <Filter className="h-4 w-4" />
-                  Filters
+                  {t('Filters')}
                 </Button>
                 <Button variant="outline" className="flex items-center gap-2">
                   <Tags className="h-4 w-4" />
-                  Categories
+                  {t('Categories')}
                 </Button>
                 <Button onClick={handleUpload} className="flex items-center gap-2">
                   <Folder className="h-4 w-4" />
-                  Upload
+                  {t('Upload')}
                 </Button>
               </div>
             </div>
 
             <Tabs defaultValue="all" className="w-full">
               <TabsList className="mb-6">
-                <TabsTrigger value="all">All Resources</TabsTrigger>
-                <TabsTrigger value="documents">Documents</TabsTrigger>
-                <TabsTrigger value="videos">Videos</TabsTrigger>
-                <TabsTrigger value="audio">Audio</TabsTrigger>
-                <TabsTrigger value="presentations">Presentations</TabsTrigger>
+                <TabsTrigger value="all">{t('All Resources')}</TabsTrigger>
+                <TabsTrigger value="documents">{t('Documents')}</TabsTrigger>
+                <TabsTrigger value="videos">{t('Videos')}</TabsTrigger>
+                <TabsTrigger value="audio">{t('Audio')}</TabsTrigger>
+                <TabsTrigger value="presentations">{t('Presentations')}</TabsTrigger>
               </TabsList>
 
               <TabsContent value="all" className="space-y-4">
@@ -196,7 +198,7 @@ const ResourcesPage = () => {
                             <p className="text-sm text-gray-600 mb-2">{resource.description}</p>
                             <div className="flex flex-wrap gap-2 text-sm text-gray-500">
                               <span>{resource.category} • {resource.subCategory}</span>
-                              <span>By {resource.author}</span>
+                              <span>{t('By')} {resource.author}</span>
                               <span>{resource.date}</span>
                               <span className="flex items-center gap-1">
                                 <Star className="h-4 w-4 text-yellow-500" />
@@ -227,7 +229,7 @@ const ResourcesPage = () => {
                             className="flex items-center gap-2"
                           >
                             <BookmarkPlus className="h-4 w-4" />
-                            Save
+                            {t('Save')}
                           </Button>
                           <Button
                             variant="default"
@@ -236,7 +238,7 @@ const ResourcesPage = () => {
                             className="flex items-center gap-2"
                           >
                             <Download className="h-4 w-4" />
-                            Download
+                            {t('Download')}
                           </Button>
                         </div>
                       </div>
@@ -255,12 +257,12 @@ const ResourcesPage = () => {
                           <div>
                             <h3 className="font-semibold text-lg">{resource.title}</h3>
                             <p className="text-sm text-gray-500">
-                              By {resource.author} • {resource.date}
+                              {t('By')} {resource.author} • {resource.date}
                             </p>
                           </div>
                         </div>
                         <Button variant="outline" size="sm" onClick={() => handleDownload(resource.id)}>
-                          Download
+                          {t('Download')}
                         </Button>
                       </div>
                     </CardContent>
@@ -278,12 +280,12 @@ const ResourcesPage = () => {
                           <div>
                             <h3 className="font-semibold text-lg">{resource.title}</h3>
                             <p className="text-sm text-gray-500">
-                               By {resource.author} • {resource.date}
+                               {t('By')} {resource.author} • {resource.date}
                             </p>
                           </div>
                         </div>
                         <Button variant="outline" size="sm" onClick={() => handleDownload(resource.id)}>
-                          Download
+                          {t('Download')}
                         </Button>
                       </div>
                     </CardContent>
@@ -301,12 +303,12 @@ const ResourcesPage = () => {
                           <div>
                             <h3 className="font-semibold text-lg">{resource.title}</h3>
                             <p className="text-sm text-gray-500">
-                               By {resource.author} • {resource.date}
+                               {t('By')} {resource.author} • {resource.date}
                             </p>
                           </div>
                         </div>
                         <Button variant="outline" size="sm" onClick={() => handleDownload(resource.id)}>
-                          Download
+                          {t('Download')}
                         </Button>
                       </div>
                     </CardContent>
@@ -324,12 +326,12 @@ const ResourcesPage = () => {
                           <div>
                             <h3 className="font-semibold text-lg">{resource.title}</h3>
                             <p className="text-sm text-gray-500">
-                               By {resource.author} • {resource.date}
+                               {t('By')} {resource.author} • {resource.date}
                             </p>
                           </div>
                         </div>
                         <Button variant="outline" size="sm" onClick={() => handleDownload(resource.id)}>
-                          Download
+                          {t('Download')}
                         </Button>
                       </div>
                     </CardContent>

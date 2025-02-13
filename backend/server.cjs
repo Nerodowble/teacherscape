@@ -2,38 +2,58 @@
 const { initializeDatabase, createUser, verifyPassword, getUserByEmail, openDb } = require('./database.cjs');
 const express = require('express');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 
 const app = express();
 let port = 3003;
 
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'; // Replace with a strong secret in production
+
 app.use(cors({
-  origin: ['http://localhost:8080', 'http://localhost:8081'],
+  origin: ['http://localhost:8080', 'http://localhost:8081', 'http://localhost:8082'],
   exposedHeaders: ['Authorization'],
 }));
 app.use(express.json());
 
 // Middleware to verify token
-const verifyToken = async (req, res, next) => {
-  const token = req.headers.authorization;
+const verifyToken = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(' ')[1]; // Bearer <token>
 
   if (!token) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  try {
-    // Assuming the token is the user ID
-    const user = await getUserByEmail(token);
-
-    if (!user) {
-      return res.status(401).json({ error: 'Invalid token' });
+  jwt.verify(token, JWT_SECRET, async (err, user) => {
+    if (err) {
+      console.log('Failed to verify token', err);
+      return res.status(403).json({ error: 'Invalid token' });
     }
 
-    req.user = user;
-    next();
-  } catch (error) {
-    console.error('Failed to verify token', error);
-    return res.status(500).json({ error: 'Failed to verify token' });
-  }
+    try {
+      const db = await openDb();
+      const dbUser = await new Promise((resolve, reject) => {
+        db.get(`SELECT * FROM users WHERE id = ?`, [user.id], (err, row) => {
+          if (err) {
+            console.error('Failed to get user by id', err);
+            reject(err);
+          } else {
+            resolve(row);
+          }
+        });
+      });
+
+      if (!dbUser) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      req.user = dbUser;
+      next();
+    } catch (error) {
+      console.error('Failed to verify token', error);
+      return res.status(500).json({ error: 'Failed to verify token' });
+    }
+  });
 };
 
 async function main() {
@@ -73,8 +93,10 @@ async function main() {
           return res.status(401).json({ error: 'Nome de usuário ou senha incorretos' });
         }
 
+        // Generate a JWT token
+        const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '1h' });
         console.log('Login successful', user);
-        res.json({ message: 'Login successful', user });
+        res.json({ message: 'Login successful', user, token: token });
       } catch (error) {
         console.error('Failed to login', error);
         res.status(500).json({ error: 'Failed to login' });
@@ -101,9 +123,29 @@ async function main() {
       }
     });
 
-    app.post('/logout', (req, res) => {
+   app.post('/logout', (req, res) => {
       console.log('Received logout request');
       res.status(200).json({ message: 'Logout successful' });
+    });
+
+    app.get('/dbteste', async (req, res) => {
+      const db = await openDb();
+      try {
+        const users = await new Promise((resolve, reject) => {
+          db.all('SELECT * FROM users', (err, rows) => {
+            if (err) {
+              console.error('Failed to get all users', err);
+              reject(err);
+            } else {
+              resolve(rows);
+            }
+          });
+        });
+        res.json(users);
+      } catch (e) {
+        console.error('Failed to get all users', e);
+        res.status(500).json({ error: 'Failed to get all users' });
+      }
     });
 
     app.get('/profile', verifyToken, async (req, res) => {
@@ -112,9 +154,10 @@ async function main() {
         const user = req.user;
         console.log('Fetching profile for user:', user);
         res.json({
+          id: user.id,
           name: user.name,
           email: user.email,
-          bio: user.profilePicture || 'A brief description about yourself.', // Assuming profilePicture is the bio
+          bio: user.bio || '',
         });
       } catch (error) {
         console.error('Failed to get profile', error);

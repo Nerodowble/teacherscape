@@ -1,0 +1,59 @@
+Executar o backend e o banco de dados:
+
+PS C:\Users\willi\teacherscape> ts-node backend/server.cjs
+Opening database
+Database opened successfully
+Database initialized successfully
+Backend server started
+Backend server listening on port 3003
+BACKEND_PORT=3003
+Opening database
+Database opened successfully
+Received login request
+Logging in user: teste@teste.com
+Opening database
+Database opened successfully
+User found {
+  id: '965e1ad2-2709-4412-bdc2-ac66349b766d',
+  name: 'teste',
+  email: 'teste@teste.com',
+  passwordHash: '$2b$10$4uecqu12fId5dmHPH5h5t.e9Cp7ooTu3kPpOlMZj33KH5t/CmeD06',
+  emailVerified: 0,
+  profilePicture: null,
+  createdAt: '2025-02-12 22:48:01',
+  updatedAt: '2025-02-12 22:48:01'
+}
+Verifying password
+Login successful {
+  id: '965e1ad2-2709-4412-bdc2-ac66349b766d',
+  name: 'teste',
+  email: 'teste@teste.com',
+  passwordHash: '$2b$10$4uecqu12fId5dmHPH5h5t.e9Cp7ooTu3kPpOlMZj33KH5t/CmeD06',
+  emailVerified: 0,
+  profilePicture: null,
+  createdAt: '2025-02-12 22:48:01',
+  updatedAt: '2025-02-12 22:48:01'
+}
+Opening database
+Database opened successfully
+Fetching profile for user: {
+  id: '965e1ad2-2709-4412-bdc2-ac66349b766d',
+  name: 'teste',
+  email: 'teste@teste.com',
+  passwordHash: '$2b$10$4uecqu12fId5dmHPH5h5t.e9Cp7ooTu3kPpOlMZj33KH5t/CmeD06',
+  emailVerified: 0,
+  profilePicture: null,
+  createdAt: '2025-02-12 22:48:01',
+  updatedAt: '2025-02-12 22:48:01'
+}
+Opening database
+Database opened successfully
+
+
+
+------------------------------------------------
+
+
+Executar o frontend:
+
+npm run dev

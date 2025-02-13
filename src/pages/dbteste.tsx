@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 const DBTeste = () => {
+  const { t } = useTranslation();
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -21,13 +23,13 @@ const DBTeste = () => {
 
   return (
     <div>
-      <h1>Database Test Page</h1>
+      <h1>{t('Database Test Page')}</h1>
       <table>
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
+            <th>{t('ID')}</th>
+            <th>{t('Name')}</th>
+            <th>{t('Email')}</th>
           </tr>
         </thead>
         <tbody>
