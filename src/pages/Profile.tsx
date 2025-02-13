@@ -189,42 +189,44 @@ const Profile = () => {
               <CardDescription>{t('Manage your account settings.')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex items-center gap-2">
-                <Label htmlFor="twoFactorAuth">{t('Two-Factor Authentication')}</Label>
-                <Switch id="twoFactorAuth" />
+              <div className="grid gap-4">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="twoFactorAuth">{t('Two-Factor Authentication')}</Label>
+                  <Switch id="twoFactorAuth" />
+                </div>
+
+                <div>
+                  <Label htmlFor="language">{t('Language')}</Label>
+                  <Select value={language} onValueChange={handleLanguageChange}>
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder={t('Select a language')} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="en">{t('English')}</SelectItem>
+                      <SelectItem value="pt">{t('Português')}</SelectItem>
+                      <SelectItem value="es">{t('Español')}</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <Button onClick={() => handleSaveLanguage()}>{t('Save Language')}</Button>
+
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="destructive">{t('Delete Account')}</Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>{t('Are you absolutely sure?')}</AlertDialogTitle>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>{t('Cancel')}</AlertDialogCancel>
+                      <AlertDialogAction className="destructive" onClick={handleDeleteAccount}>{t('Continue')}</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+
+                <Button variant="outline">{t('Logout')}</Button>
               </div>
-
-              <div>
-                <Label htmlFor="language">{t('Language')}</Label>
-                <Select value={language} onValueChange={handleLanguageChange}>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder={t('Select a language')} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="en">{t('English')}</SelectItem>
-                    <SelectItem value="pt">{t('Português')}</SelectItem>
-                    <SelectItem value="es">{t('Español')}</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <Button onClick={() => handleSaveLanguage()}>{t('Save Language')}</Button>
-
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant="destructive">{t('Delete Account')}</Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>{t('Are you absolutely sure?')}</AlertDialogTitle>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>{t('Cancel')}</AlertDialogCancel>
-                    <AlertDialogAction className="destructive" onClick={handleDeleteAccount}>{t('Continue')}</AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-
-              <Button variant="outline">{t('Logout')}</Button>
             </CardContent>
           </Card>
         </div>

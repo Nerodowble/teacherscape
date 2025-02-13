@@ -79,8 +79,7 @@ const Reports = () => {
               <CardHeader>
                 <CardTitle>{t('Opções de Personalização')}</CardTitle>
                 <CardDescription>
-                  {t('Selecione as opções para personalizar os relatórios.')}
-                </CardDescription>
+                  {t('Selecione as opções para personalizar os relatórios.')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid gap-4">
@@ -119,18 +118,14 @@ const Reports = () => {
                 </div>
                 <div className="flex justify-end space-x-2">
                   <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    {t('Exportar PDF')}
-                  </button>
+                    {t('Exportar PDF')}</button>
                   <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    {t('Exportar DOCX')}
-                  </button>
+                    {t('Exportar DOCX')}</button>
                   <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    {t('Exportar XLSX')}
-                  </button>
+                    {t('Exportar XLSX')}</button>
                   <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    {t('Exportar CSV')}
-                  </button>
-                </div>
+                    {t('Exportar CSV')}</button>
+                  </div>
               </CardContent>
             </Card>
 
@@ -138,8 +133,7 @@ const Reports = () => {
               <CardHeader>
                 <CardTitle>{t('Agendamento de Relatórios')}</CardTitle>
                 <CardDescription>
-                  {t('Agende a geração e envio de relatórios.')}
-                </CardDescription>
+                  {t('Agende a geração e envio de relatórios.')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid gap-4">
@@ -172,8 +166,7 @@ const Reports = () => {
                 </div>
                 <div className="flex justify-end mt-4">
                   <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                    {t('Agendar')}
-                  </button>
+                    {t('Agendar')}</button>
                 </div>
               </CardContent>
             </Card>

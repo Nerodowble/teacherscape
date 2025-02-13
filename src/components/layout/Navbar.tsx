@@ -2,8 +2,10 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const Navbar = () => {
+  const { t } = useTranslation();
   const location = useLocation();
 
   return (
@@ -15,34 +17,34 @@ const Navbar = () => {
         <div className="flex items-center space-x-6">
           <Link to="/">
             <Button variant="ghost" className={`nav-link ${location.pathname === '/' ? 'bg-primary/10' : ''}`}>
-              Dashboard
+              {t('Dashboard')}
             </Button>
           </Link>
           <Link to="/analysis">
             <Button variant="ghost" className={`nav-link ${location.pathname === '/analysis' ? 'bg-primary/10' : ''}`}>
-              Analysis
+              {t('Analysis')}
             </Button>
           </Link>
           <Link to="/resources">
             <Button variant="ghost" className={`nav-link ${location.pathname === '/resources' ? 'bg-primary/10' : ''}`}>
-              Resources
+              {t('Resources')}
             </Button>
           </Link>
           <Link to="/reports">
             <Button variant="ghost" className={`nav-link ${location.pathname === '/reports' ? 'bg-primary/10' : ''}`}>
-              Reports
+              {t('Reports')}
             </Button>
           </Link>
           <Link to="/profile">
             <Button variant="ghost" className={`nav-link ${location.pathname === '/profile' ? 'bg-primary/10' : ''}`}>
-              Profile
+              {t('Profile')}
             </Button>
           </Link>
           <Button variant="ghost" onClick={() => {
             localStorage.removeItem('token');
             window.location.href = '/login';
           }}>
-            Logout
+            {t('Logout')}
           </Button>
         </div>
       </div>
