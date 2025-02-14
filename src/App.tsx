@@ -16,6 +16,7 @@ import DBTeste from "./pages/dbteste";
 import { Navigate } from "react-router-dom";
 import { LanguageProvider } from "./context/LanguageContext";
 import './i18n';
+import { useTranslation } from 'react-i18next';
 
 const queryClient = new QueryClient();
 
@@ -25,23 +26,26 @@ const ProtectedRoute = ({ children }) => {
 };
 
 const App = () => {
+  const { t } = useTranslation();
+
   return (
     <LanguageProvider>
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
           <TooltipProvider>
             <Routes>
-              <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
-              <Route path="/analysis" element={<ProtectedRoute><Analysis /></ProtectedRoute>} />
-              <Route path="/resources" element={<ProtectedRoute><Resources /></ProtectedRoute>} />
-              <Route path="/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
-              <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-              <Route path="/dbteste" element={<DBTeste />} />
-              <Route path="*" element={<NotFound />} />
+              <Route path="/" element=<ProtectedRoute><Index /></ProtectedRoute> />
+              <Route path="/analysis" element=<ProtectedRoute><Analysis /></ProtectedRoute> />
+              <Route path="/resources" element=<ProtectedRoute><Resources /></ProtectedRoute> />
+              <Route path="/reports" element=<ProtectedRoute><Reports /></ProtectedRoute> />
+              <Route path="/profile" element=<ProtectedRoute><Profile /></ProtectedRoute> />
+              <Route path="/login" element=<LoginPage /> />
+              <Route path="/register" element=<RegisterPage /> />
+              <Route path="/forgot-password" element=<ForgotPasswordPage /> />
+              <Route path="/dbteste" element=<DBTeste /> />
+              <Route path="*" element=<NotFound /> />
             </Routes>
+            <h1>{t('Welcome to my app')}</h1>
             <Toaster />
             <Sonner />
           </TooltipProvider>
