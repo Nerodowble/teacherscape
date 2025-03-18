@@ -65,6 +65,14 @@ async function main() {
       try {
         const { name, email, passwordPlain } = req.body;
         console.log('Creating user:', name, email);
+
+        // Check if the email already exists
+        const existingUser = await getUserByEmail(email);
+        if (existingUser) {
+          console.log('Email already exists');
+          return res.status(400).json({ error: 'Email já existe' });
+        }
+
         const userId = await createUser(name, email, passwordPlain);
         console.log('User created successfully with ID:', userId);
         res.status(201).json({ message: 'User created successfully', userId });

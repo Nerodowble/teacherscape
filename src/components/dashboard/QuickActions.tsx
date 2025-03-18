@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { Plus, Upload, Users, BookOpen } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
@@ -13,44 +12,105 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Progress } from "@/components/ui/progress";
 
-const QuickActions = () => {
+interface ExamInfo {
+  class: string;
+  studentName: string;
+  examName: string;
+  file: File | null;
+}
+
+interface QuickActionsProps {
+  setUploadedExams: (value: ExamInfo[]) => void;
+  uploadedExams: ExamInfo[];
+}
+
+const QuickActions: React.FC<QuickActionsProps> = ({ setUploadedExams, uploadedExams }) => {
   const { toast } = useToast();
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [examFormat, setExamFormat] = useState('image');
+  const [classValue, setClassValue] = useState('');
+  const [studentNameValue, setStudentNameValue] = useState('');
+  const [examNameValue, setExamNameValue] = useState('');
+  const [classList, setClassList] = useState(['Class A', 'Class B', 'Class C']);
+  const [studentList, setStudentList] = useState(['Student A', 'Student B', 'Student C']);
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      toast({
-        title: "File Uploaded",
-        description: `Successfully uploaded: ${file.name}`,
-      });
+  const handleFileChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    setSelectedFile(file);
+  }, []);
+
+  const handleExamFormatChange = useCallback((value: string) => {
+    setExamFormat(value);
+  }, []);
+
+  const handleFileUpload = useCallback(() => {
+    if (!selectedFile || !classValue || !studentNameValue || !examNameValue) {
+      alert('Please select a file and enter the exam information.');
+      return;
     }
-  };
 
-  const handleNewClass = (e: React.FormEvent<HTMLFormElement>) => {
+    // Mock upload progress
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += 10;
+      setUploadProgress(progress);
+      if (progress >= 100) {
+        clearInterval(interval);
+        toast({
+          title: "File Uploaded",
+          description: `Successfully uploaded: ${selectedFile?.name}`,
+        });
+        setUploadedExams([...uploadedExams, {
+          class: classValue,
+          studentName: studentNameValue,
+          examName: examNameValue,
+          file: selectedFile
+        }]);
+        setSelectedFile(null);
+        setUploadProgress(0);
+        setClassValue('');
+        setStudentNameValue('');
+        setExamNameValue('');
+      }
+    }, 200);
+  }, [classValue, examNameValue, selectedFile, setUploadedExams, studentNameValue, toast, uploadedExams]);
+
+  const handleNewClass = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     toast({
       title: "Class Created",
       description: `New class "${formData.get('className')}" created successfully.`,
     });
-  };
+  }, [toast]);
 
-  const handleResources = () => {
+  const handleResources = useCallback(() => {
     toast({
       title: "Resources Accessed",
       description: "Opening resource library...",
     });
-  };
+  }, [toast]);
 
-  const handleCreate = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleCreate = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     toast({
       title: "Content Created",
       description: `New ${formData.get('contentType')} content created.`,
     });
-  };
+  }, [toast]);
+
+  const handleClassChange = useCallback((value: string) => {
+    setClassValue(value);
+  }, []);
+
+  const handleStudentNameChange = useCallback((value: string) => {
+    setStudentNameValue(value);
+  }, []);
 
   return (
     <div className="glass-card p-6 space-y-4">
@@ -70,43 +130,65 @@ const QuickActions = () => {
             <DialogHeader>
               <DialogTitle>Upload Exam</DialogTitle>
               <DialogDescription>
-                Choose an exam file to upload. Supported formats: PDF, DOC, DOCX
+                Choose an exam file to upload.
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 pt-4">
+              <Label htmlFor="class">Class</Label>
+              <Select onValueChange={handleClassChange}>
+                <SelectTrigger id="class">
+                  Select class
+                </SelectTrigger>
+                <SelectContent className="max-h-40 overflow-y-auto">
+                  {classList.map((item) => (
+                    <SelectItem key={item} value={item}>{item}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Label htmlFor="studentName">Student Name</Label>
+              <Select onValueChange={handleStudentNameChange}>
+                <SelectTrigger id="studentName">
+                  Select student
+                </SelectTrigger>
+                <SelectContent className="max-h-40 overflow-y-auto">
+                  {studentList.map((item) => (
+                    <SelectItem key={item} value={item}>{item}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Label htmlFor="examName">Exam Name</Label>
+              <Input type="text" id="examName" value={examNameValue} onChange={(e) => setExamNameValue(e.target.value)}/>
+
+              <Label htmlFor="exam-format">Exam Format</Label>
+              <Select onValueChange={handleExamFormatChange}>
+                <SelectTrigger id="exam-format">
+                  Select format
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="image">Image</SelectItem>
+                  <SelectItem value="text">Text</SelectItem>
+                  <SelectItem value="pdf">PDF</SelectItem>
+                  <SelectItem value="json">JSON</SelectItem>
+                </SelectContent>
+              </Select>
               <Input
                 type="file"
-                accept=".pdf,.doc,.docx"
-                onChange={handleFileUpload}
+                id="exam-upload"
+                onChange={handleFileChange}
+                accept="image/*,text/*,.pdf,.json"
               />
+              {selectedFile && (
+                <div>
+                  <p>Selected file: {selectedFile?.name}</p>
+                  <Progress value={uploadProgress} />
+                  <Button onClick={handleFileUpload} disabled={uploadProgress > 0 && uploadProgress < 100}>
+                    {uploadProgress === 0 ? 'Upload' : uploadProgress === 100 ? 'Uploaded' : `Uploading... ${uploadProgress}%`}
+                  </Button>
+                </div>
+              )}
             </div>
-          </DialogContent>
-        </Dialog>
-
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button
-              variant="outline"
-              className="flex items-center gap-2 h-auto py-4 hover:bg-primary-light w-full"
-            >
-              <Users className="h-5 w-5" />
-              <span>New Class</span>
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Create New Class</DialogTitle>
-              <DialogDescription>
-                Enter the details for your new class
-              </DialogDescription>
-            </DialogHeader>
-            <form onSubmit={handleNewClass} className="space-y-4 pt-4">
-              <div className="space-y-2">
-                <Label htmlFor="className">Class Name</Label>
-                <Input id="className" name="className" required />
-              </div>
-              <Button type="submit">Create Class</Button>
-            </form>
           </DialogContent>
         </Dialog>
 
@@ -153,8 +235,8 @@ const QuickActions = () => {
             <form onSubmit={handleCreate} className="space-y-4 pt-4">
               <div className="space-y-2">
                 <Label htmlFor="contentType">Content Type</Label>
-                <select 
-                  id="contentType" 
+                <select
+                  id="contentType"
                   name="contentType"
                   className="w-full border rounded-md p-2"
                   required

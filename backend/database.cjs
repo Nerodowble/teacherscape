@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 const path = require('path');
 
-const dbFile = 'backend/database/database.sqlite';
+const dbFile = path.join(__dirname, 'database', 'database.sqlite');
 const saltRounds = 10;
 
 // Ensure the directory exists

@@ -57,3 +57,7 @@ Database opened successfully
 Executar o frontend:
 
 npm run dev
+
+Executar backend:
+
+cd backend; node server.cjs
