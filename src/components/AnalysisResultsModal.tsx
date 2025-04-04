@@ -10,7 +10,7 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import MockAnalysisResults from './MockAnalysisResults';
 import RemedialExercises from './RemedialExercises';
-import StudentProgressChart from './dashboard/StudentProgressChart';
+import { StudentProgressChart, Recommendations } from './dashboard/StudentProgressChart';
 import CollaborationMockup from './CollaborationMockup';
 
 interface AnalysisResultsModalProps {
@@ -36,6 +36,7 @@ const AnalysisResultsModal: React.FC<AnalysisResultsModalProps> = ({ exam, close
         <StudentProgressChart studentName={exam.studentName} examName={exam.examName}/>
         <MockAnalysisResults />
         <RemedialExercises />
+        <Recommendations data={[{ name: exam.examName, score: 70, previousScore: 60, previousGrades: [50, 60, 70], topicPerformance: { equations: 70, algebra: 80 }, timeSpent: 60 }]}/>
         <CollaborationMockup />
       </DialogContent>
     </Dialog>
